@@ -4,7 +4,8 @@
   "description": "Dithers all images on the current web page using various algorithms.",
   "scripts": {
     "build": "rollup -c",
-    "watch": "rollup -c -w"
+    "watch": "rollup -c -w",
+    "package": "npm run build && zip -r dither-extension.zip manifest.json popup/ icons/ dist/ -x '*.DS_Store'"
   },
   "devDependencies": {
     "rollup": "^4.9.0",
