@@ -1,5 +1,7 @@
 # Dither
 
+<img width="1280" height="800" alt="screenshot-1" src="https://github.com/user-attachments/assets/7cf2f7d4-e05a-43e7-b645-d79f233499cd" />
+
 A Chrome extension that applies dithering algorithms to all images on a webpage, converting them to black and white with various artistic effects.
 
 ## Features
