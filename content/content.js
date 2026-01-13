@@ -42,7 +42,7 @@ async function loadImageWithCORS(src) {
 
 async function processImage(img, algorithm = 'floyd-steinberg') {
   // 6.1 Identify
-  if (img.width < 32 || img.height < 32) return;
+  if (img.width < 32 || img.height < 32) return { skipped: 'too-small' };
   
   // Clean up old blob URL if re-processing
   if (img.dataset.blobUrl) {
@@ -115,7 +115,7 @@ async function processImage(img, algorithm = 'floyd-steinberg') {
       return new Promise(resolve => {
          resCanvas.toBlob(blob => {
              if (!blob) {
-               resolve();
+               resolve({ skipped: 'error' });
                return;
              }
              const url = URL.createObjectURL(blob);
@@ -129,13 +129,17 @@ async function processImage(img, algorithm = 'floyd-steinberg') {
                img.src = url;
                img.dataset.ditherProcessed = "true";
                img.dataset.blobUrl = url;
-               resolve();
+               resolve({ success: true });
              }, 0);
          }, 'image/png');
       });
 
   } catch (err) {
-      // SecurityError if tainted or other - silently skip
+      // SecurityError if tainted or other
+      if (err.name === 'SecurityError' || err.message.includes('tainted')) {
+        return { skipped: 'cors' };
+      }
+      return { skipped: 'error' };
   }
 }
 
@@ -143,12 +147,21 @@ async function ditherAllImages(algorithm = 'floyd-steinberg') {
   // If algorithm is 'original', restore all images
   if (algorithm === 'original') {
     restoreAllImages();
-    return;
+    return { restored: true };
   }
   
   const images = Array.from(document.querySelectorAll('img'));
-  const promises = images.map(img => processImage(img, algorithm));
-  await Promise.all(promises);
+  const results = await Promise.all(images.map(img => processImage(img, algorithm)));
+  
+  const stats = {
+    total: images.length,
+    processed: results.filter(r => r?.success).length,
+    corsErrors: results.filter(r => r?.skipped === 'cors').length,
+    tooSmall: results.filter(r => r?.skipped === 'too-small').length,
+    otherErrors: results.filter(r => r?.skipped === 'error').length
+  };
+  
+  return stats;
 }
 
 function restoreAllImages() {
@@ -170,8 +183,8 @@ initWorker();
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "dither_page") {
     const algorithm = request.algorithm || 'floyd-steinberg';
-    ditherAllImages(algorithm).then(() => {
-      sendResponse({ status: "done" });
+    ditherAllImages(algorithm).then((stats) => {
+      sendResponse({ status: "done", stats });
     });
     return true; // Keep channel open
   }

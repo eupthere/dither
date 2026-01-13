@@ -36,6 +36,29 @@
     button:hover {
       background: #333;
     }
+    #message {
+      margin-top: 12px;
+      padding: 10px;
+      font-size: 12px;
+      border-radius: 4px;
+      display: none;
+      white-space: pre-line;
+    }
+    #message.success {
+      background: #e8f5e9;
+      color: #2e7d32;
+      border: 1px solid #a5d6a7;
+    }
+    #message.warning {
+      background: #fff3e0;
+      color: #e65100;
+      border: 1px solid #ffcc80;
+    }
+    #message.info {
+      background: #e3f2fd;
+      color: #1565c0;
+      border: 1px solid #90caf9;
+    }
   </style>
 </head>
 <body>
@@ -47,6 +70,7 @@
     <option value="bayer">Bayer (Ordered)</option>
   </select>
   <button id="ditherBtn">Apply</button>
+  <div id="message"></div>
   <script src="popup.js"></script>
 </body>
 </html>
