@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "dither",
+  "version": "1.0",
+  "description": "Dithers all images on the current page using various algorithms.",
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["dist/content.bundle.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "Dither Current Page"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["dist/worker.bundle.js"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "permissions": ["activeTab"]
+}
