@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      width: 220px;
+      padding: 15px;
+      font-family: system-ui, sans-serif;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: left;
+    }
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 13px;
+      background: white;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #000;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      border-radius: 4px;
+    }
+    button:hover {
+      background: #333;
+    }
+  </style>
+</head>
+<body>
+  <h3 style="margin-top: 0; font-size: 16px;">Dither Page</h3>
+  <label for="algorithmSelect">Algorithm:</label>
+  <select id="algorithmSelect">
+    <option value="original">Original (Restore)</option>
+    <option value="floyd-steinberg">Floyd-Steinberg</option>
+    <option value="bayer">Bayer (Ordered)</option>
+  </select>
+  <button id="ditherBtn">Apply</button>
+  <script src="popup.js"></script>
+</body>
+</html>
