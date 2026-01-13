@@ -1,0 +1,13 @@
+{
+  "name": "dither-chrome-extension",
+  "version": "1.0.0",
+  "description": "Dithers all images on the current web page using various algorithms.",
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c -w"
+  },
+  "devDependencies": {
+    "rollup": "^4.9.0",
+    "@rollup/plugin-node-resolve": "^15.2.3"
+  }
+}
